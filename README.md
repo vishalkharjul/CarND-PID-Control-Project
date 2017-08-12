@@ -58,14 +58,14 @@ I tried implementing twiddle code but could not complete it succesfully so decid
  
 ## Reflection:-
 
-## P-Value
+P-Value
 
 The proportaional gain is directly porportional to the cross track error and has a tendancy to induce an oscillating effect near the reference line.  I observed same while tuning it's value.  
 
-## I-Value
+I-Value
 
 The I-Value points to accumulated CTE errors the steering angle. It is simply the sum of all the previous values which are publised approx every 0.1s, the I-value is expected to be ten times smaller than the P-value, with an order of magnitude of 0.01.
 
-## D-Value
+D-Value
 
 The D-Value points to the conversion from the derivative CTE errors to the steering angle. As the derivataive CTE error is approximated by the difference between the last two values which are handed with a difference of approx. 0.1s, the D-value is expected to be ten times bigger than the P-value, with an order of magnitude of 1.  
