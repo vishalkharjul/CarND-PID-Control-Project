@@ -35,58 +35,39 @@ There's an experimental patch for windows in this [PR](https://github.com/udacit
 3. Compile: `cmake .. && make`
 4. Run it: `./pid`. 
 
-## Editor Settings
 
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
 
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
 
-## Code Style
 
-Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
+## Implementation:-
 
-## Project Instructions and Rubric
+PID controller consists of below three parameters
+1) proportional gain (Kp)
+2) integral gain (Ki)
+3) derivative gain (Kd)
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
 
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/e8235395-22dd-4b87-88e0-d108c5e5bbf4/concepts/6a4d8d42-6a04-4aa6-b284-1697c0fd6562)
-for instructions and the project rubric.
+I started with manual tuning and with first parameter Kp. Idea was to increase Kp in such way that it will induce continuos Car oscillations. 
+Once we see oscillations, I focused on tuning parameter Kd to lower down oscillations. After doing this Car at least strarted running straight but I noticed increase in error 
+as it  travelled more time steps. This effect points to the role of Ki. Ki controls accumulation of error for long time and hence it's role increases as car passes more disctance. 
+Hence to supress dominant effect of accumulated error we have to  set it to sufficiently large value than other two parameters. I tried multiple values and it worked well for below three final values. 
+[.15 , .0001 , 0.8] 
 
-## Hints!
 
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
+I tried implementing twiddle code but could not complete it succesfully so decided to do manual tuning. I intialised each parameter value to 0.5 at start and tried to change it by +-0.05 until I gain desired result. I also studied resuls by fellow students to get tips of manual tuning. 
+ 
+## Reflection:-
 
-## Call for IDE Profiles Pull Requests
+## Initial Values:
 
-Help your fellow students!
+## P-Value
 
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
+The proportaional gain is directly porportional to the cross track error and has a tendancy to induce an oscillating effect near the reference line.  I observed same while tuning it's value.  
 
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
+## I-Value
 
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
+The I-Value points to accumulated CTE errors the steering angle. It is simply the sum of all the previous values which are publised approx every 0.1s, the I-value is expected to be ten times smaller than the P-value, with an order of magnitude of 0.01.
 
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
+## D-Value
 
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
+The D-Value points to the conversion from the derivative CTE errors to the steering angle. As the derivataive CTE error is approximated by the difference between the last two values which are handed with a difference of approx. 0.1s, the D-value is expected to be ten times bigger than the P-value, with an order of magnitude of 1.  
