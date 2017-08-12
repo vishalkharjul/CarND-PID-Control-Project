@@ -58,8 +58,6 @@ I tried implementing twiddle code but could not complete it succesfully so decid
  
 ## Reflection:-
 
-## Initial Values:
-
 ## P-Value
 
 The proportaional gain is directly porportional to the cross track error and has a tendancy to induce an oscillating effect near the reference line.  I observed same while tuning it's value.  
